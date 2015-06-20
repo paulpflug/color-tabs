@@ -61,7 +61,7 @@ processPath= (path,color,revert=false,save=false) ->
       li.tab[data-type='TextEditor']>
       div.title[data-path='#{path.replace(/\\/g,"\\\\")}']"
     for tabDiv in tabDivs
-      tabDiv.parentElement.setAttribute "data-path", path.replace(/\\/g,"\\\\")
+      tabDiv.parentElement.setAttribute "data-path", path
     unless cssElement.parentElement?
       head = document.getElementsByTagName('head')[0]
       head.appendChild cssElement
