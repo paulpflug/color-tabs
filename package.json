@@ -1,0 +1,36 @@
+{
+  "name": "color-tabs",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Adds colors to tabs..",
+  "keywords": [
+    "tabs",
+    "color"
+  ],
+  "repository": "https://github.com/paulpflug/color-tabs",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-simple-logger": "~0.0.1",
+    "season": "^5.3.0"
+  },
+  "dev-dependencies": {
+    "atom-package-reloader": "~0.0.2"
+  },
+  "providedServices": {
+    "color-change-cb": {
+      "description": "Is called on color change",
+      "versions": {
+        "0.0.1": "provideColorChangeCb"
+      }
+    },
+    "change-color": {
+      "description": "changes the color of a tab",
+      "versions": {
+        "0.0.1": "provideChangeColor"
+      }
+    }
+  }
+}
