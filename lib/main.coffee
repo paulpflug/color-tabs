@@ -46,7 +46,6 @@ module.exports = new class Main
 
   provideColorChangeCb: ->
     return (cb) =>
-      console.log "recieved colorChangeCb"
       @colorChangeCb.push cb
       for path, color of @colorTabs.getColors()
         cb path, color

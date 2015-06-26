@@ -114,11 +114,14 @@ class ColorTabs
         setTimeout processAllTabs, 10
       @disposables.add atom.commands.add 'atom-workspace',
         'color-tabs:toggle': @toggle
-      @disposables.add atom.commands.add 'atom-workspace',
         'color-tabs:color-current-tab': =>
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?
             @color te.getPath(), getRandomColor()
+        'color-tabs:uncolor-current-tab': =>
+          te = atom.workspace.getActiveTextEditor()
+          if te?.getPath?
+            @color te.getPath(), false
     log "loaded"
   color: (path, color) ->
     processPath path, color, !color, true
