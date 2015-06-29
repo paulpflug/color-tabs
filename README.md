@@ -43,9 +43,11 @@ your package:
   #Wherever you want to use it
     @changeColor path, newColor # changes the color of a tab for a specific filepath
 
-    @colorChangeCb (path, newColor) ->
+    @cbHandler = @colorChangeCb (path, newColor) ->
       #is called after the color of a tab got changed
       #newColor is false if it got uncolored
 
-
+  #cleanup cb
+  deactivate: ->
+    @cbHandler?.dispose?()
 ```

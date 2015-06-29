@@ -45,10 +45,15 @@ module.exports = new class Main
       @color? path, color
 
   provideColorChangeCb: ->
-    return (cb) =>
+    return (cb, add=true) =>
       @colorChangeCb.push cb
       for path, color of @colorTabs.getColors()
         cb path, color
+      return dispose: =>
+        index = @colorChangeCb.indexOf cb
+        if index > -1
+          @colorChangeCb.splice index,1
+
   deactivate: ->
     log "deactivating"
     @onceActivated?.dispose?()
