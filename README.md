@@ -51,3 +51,13 @@ your package:
   deactivate: ->
     @cbHandler?.dispose?()
 ```
+
+## Developing
+
+Run `npm install` in the package directory.
+
+Open it in atom in dev mode.
+
+For debugging set the debug field in package settings to the needed debug level.
+
+Should autoreload the package on changes in `lib` and `styles` folders

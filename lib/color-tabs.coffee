@@ -1,10 +1,13 @@
 sep = require("path").sep
-log = require("atom-simple-logger")(pkg:"color-tabs",nsp:"core")
+log = null
 CSON = require 'season'
 colorFile = atom.getConfigDirPath()+"color-tabs.cson"
 colors = {}
 colorChangeCb = null
 cssElements = {}
+
+
+
 getCssElement = (path, color) ->
   cssElement = cssElements[path]
   unless cssElement?
@@ -13,36 +16,42 @@ getCssElement = (path, color) ->
     cssElements[path] = cssElement
   while cssElement.firstChild?
     cssElement.removeChild cssElement.firstChild
+  return cssElement unless color
   path = path.replace(/\\/g,"\\\\")
-  cssElement.appendChild document.createTextNode """
-  ul.tab-bar>li.tab[data-path='#{path}'],
-  ul.tab-bar>li.tab[data-path='#{path}']:before,
-  ul.tab-bar>li.tab[data-path='#{path}']:after,
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}'].active,
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}'].active:before,
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}'].active:after{
-    background-image:
-    -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);
-  }
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}'],
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}']:before,
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}']:after{
-    background-image:
-    -webkit-linear-gradient(top, #{color} 0%, #333333 100%);
-  }
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}'].active,
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}'].active:before,
-  atom-workspace.theme-atom-dark-ui ul.tab-bar>li.tab[data-path='#{path}'].active:after{
-    background-image:
-    -webkit-linear-gradient(top, #{color} 0%, #222222 100%);
-  }
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}'],
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}']:before,
-  atom-workspace.theme-atom-light-ui ul.tab-bar>li.tab[data-path='#{path}']:after{
-    background-image:
-    -webkit-linear-gradient(top, #{color} 0%, #d9d9d9 100%);
-  }
-  """
+  cssBuilder = (css, theme="", active="") ->
+    basis = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab']"
+    theme = "atom-workspace.theme-#{theme}" if theme
+    active = ".active" if active
+    selector = "#{theme} #{basis}#{active}"
+    return "#{selector},#{selector}:before,#{selector}:after{#{css}}"
+  if atom.config.get("color-tabs.backgroundGradient")
+    css  = cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);"
+    css += cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);",
+      "isotope-ui"
+    css += cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);",
+      "atom-light-ui", true
+    css += cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, #d9d9d9 100%);",
+      "atom-light-ui"
+    css += cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, #222222 100%);",
+      "atom-dark-ui", true
+    css += cssBuilder "background-image:
+     -webkit-linear-gradient(top, #{color} 0%, #333333 100%);",
+      "atom-dark-ui"
+  else
+    if parseInt(color.replace('#', ''), 16) > 0xffffff/2
+      text_color = "black"
+    else
+      text_color = "white"
+    css = cssBuilder "background-color: #{color}; color: #{text_color};
+     background-image: none;"
+    css += cssBuilder "background-color: #{color};", "isotope-ui"
+  cssElement.appendChild document.createTextNode css
+
   return cssElement
 getRandomColor= ->
   letters = '0123456789ABCDEF'.split('')
@@ -101,7 +110,8 @@ module.exports =
 class ColorTabs
   disposables: null
 
-  constructor:  ->
+  constructor: (logger) ->
+    log = logger "core"
     CSON.readFile colorFile, (err, content) =>
       unless err
         colors = content
@@ -122,6 +132,7 @@ class ColorTabs
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?
             @color te.getPath(), false
+      @disposables.add atom.config.observe("color-tabs.backgroundGradient",@repaint)
     log "loaded"
   color: (path, color) ->
     processPath path, color, !color, true
@@ -132,9 +143,15 @@ class ColorTabs
       return colors
     else
       return {}
+  repaint: =>
+    if @processed
+      processAllTabs()
   toggle: =>
     @processed = processAllTabs(@processed)
   destroy: =>
     @processed = processAllTabs(true)
     @disposables?.dispose()
     @disposables = null
+    sep = null
+    log = null
+    CSON = null

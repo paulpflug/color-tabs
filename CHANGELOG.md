@@ -1,3 +1,18 @@
-## 0.1.0 - First Release
-* Every feature added
-* Every bug fixed
+## 0.1.2
+
+* added option to disable background-color gradient thx @averrin
+* added high contrast text color for solid colored tabs thx @averrin
+
+## 0.1.1
+
+* services: added the ability to cleanup the `colorChangeCb`
+
+## 0.1.0
+
+* added shortcut to uncolor tabs
+
+## 0.0.2
+
+* bugfix for windows
+
+## 0.0.1 - First Release
