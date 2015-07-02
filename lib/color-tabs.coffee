@@ -43,7 +43,7 @@ getCssElement = (path, color) ->
      -webkit-linear-gradient(top, #{color} 0%, #333333 100%);",
       "atom-dark-ui"
   else
-    css = ".tab .marker {
+    css = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab'] .marker {
       border-color: transparent #{color} transparent transparent;
       display: inline-block;
       width: 0;
@@ -55,9 +55,11 @@ getCssElement = (path, color) ->
       top: 0;
     }"
     tab = (document.querySelector ".title[data-path='#{path}']").parentElement
-    marker = document.createElement 'div'
-    marker.className = 'marker'
-    tab.appendChild marker
+    marker = document.querySelector "ul.tab-bar>li.tab[data-path='#{path}'] .marker"
+    if !marker
+      marker = document.createElement 'div'
+      marker.className = 'marker'
+      tab.appendChild marker
   cssElement.appendChild document.createTextNode css
 
   return cssElement
