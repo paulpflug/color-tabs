@@ -43,13 +43,21 @@ getCssElement = (path, color) ->
      -webkit-linear-gradient(top, #{color} 0%, #333333 100%);",
       "atom-dark-ui"
   else
-    if parseInt(color.replace('#', ''), 16) > 0xffffff/2
-      text_color = "black"
-    else
-      text_color = "white"
-    css = cssBuilder "background-color: #{color}; color: #{text_color};
-     background-image: none;"
-    css += cssBuilder "background-color: #{color};", "isotope-ui"
+    css = ".tab .marker {
+      border-color: transparent #{color} transparent transparent;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }"
+    tab = (document.querySelector ".title[data-path='#{path}']").parentElement
+    marker = document.createElement 'div'
+    marker.className = 'marker'
+    tab.appendChild marker
   cssElement.appendChild document.createTextNode css
 
   return cssElement
