@@ -61,6 +61,9 @@ getRandomColor= ->
   return color
 
 processPath= (path,color,revert=false,save=false) ->
+  unless path?
+    atom.notifications.addWarning "coloring a unsaved tab is not supported"
+    return
   cssElement = getCssElement path, color
   unless revert
     if save
