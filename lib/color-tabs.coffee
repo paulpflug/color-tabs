@@ -131,6 +131,8 @@ class ColorTabs
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?
             @color te.getPath(), getRandomColor()
+          else
+            atom.notifications.addWarning "coloring is only possible for file tabs"
         'color-tabs:uncolor-current-tab': =>
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?

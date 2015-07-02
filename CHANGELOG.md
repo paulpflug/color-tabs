@@ -1,3 +1,7 @@
+## 0.1.3
+
+* added a notification, that unsaved tabs cannot be colored
+
 ## 0.1.2
 
 * added option to disable background-color gradient thx @averrin
