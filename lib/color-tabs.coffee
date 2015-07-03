@@ -43,13 +43,50 @@ getCssElement = (path, color) ->
      -webkit-linear-gradient(top, #{color} 0%, #333333 100%);",
       "atom-dark-ui"
   else
-    if parseInt(color.replace('#', ''), 16) > 0xffffff/2
-      text_color = "black"
-    else
-      text_color = "white"
-    css = cssBuilder "background-color: #{color}; color: #{text_color};
-     background-image: none;"
-    css += cssBuilder "background-color: #{color};", "isotope-ui"
+    markerType = 'border'
+    css = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab'] .marker {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      position: absolute;
+      "
+    if markerType == 'corner'
+      css += "
+        border-color: transparent #{color} transparent transparent;
+        border-width: 0 20px 20px 0;
+        right: 0;
+        top: 0;
+      }"
+    else if markerType == 'round'
+      css += "
+          border-color: #{color};
+          border-width: 6px;
+          right: 20px;
+          top: 50%;
+          border-radius: 10px;
+      }"
+    else if markerType == 'square'
+      css += "
+          border-color: #{color};
+          border-width: 6px;
+          right: 20px;
+          top: 50%;
+          border-radius: 3px;
+      }"
+    else if markerType == 'border'
+      side = 'bottom'
+      size = 5
+      css = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab'] {
+          box-sizing: border-box;
+          border-#{side}: solid #{size}px #{color};
+      }"
+    tab = (document.querySelector ".title[data-path='#{path}']").parentElement
+    marker = document.querySelector "ul.tab-bar>li.tab[data-path='#{path}'] .marker"
+    if !marker
+      marker = document.createElement 'div'
+      marker.className = 'marker'
+      tab.appendChild marker
   cssElement.appendChild document.createTextNode css
 
   return cssElement
