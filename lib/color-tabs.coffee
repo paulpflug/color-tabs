@@ -18,75 +18,116 @@ getCssElement = (path, color) ->
     cssElement.removeChild cssElement.firstChild
   return cssElement unless color
   path = path.replace(/\\/g,"\\\\")
-  cssBuilder = (css, theme="", active="") ->
-    basis = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab']"
-    theme = "atom-workspace.theme-#{theme}" if theme
-    active = ".active" if active
-    selector = "#{theme} #{basis}#{active}"
-    return "#{selector},#{selector}:before,#{selector}:after{#{css}}"
-  if atom.config.get("color-tabs.backgroundGradient")
-    css  = cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);"
-    css += cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);",
-      "isotope-ui"
-    css += cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);",
-      "atom-light-ui", true
-    css += cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, #d9d9d9 100%);",
-      "atom-light-ui"
-    css += cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, #222222 100%);",
-      "atom-dark-ui", true
-    css += cssBuilder "background-image:
-     -webkit-linear-gradient(top, #{color} 0%, #333333 100%);",
-      "atom-dark-ui"
-  else
-    markerType = 'border'
-    css = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab'] .marker {
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      position: absolute;
-      "
-    if markerType == 'corner'
-      css += "
-        border-color: transparent #{color} transparent transparent;
-        border-width: 0 20px 20px 0;
+  cssBuilder = (oldcss="",{css, theme, active, marker, before, after}) ->
+    selector = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab']"
+    if theme?
+      selector = "atom-workspace.theme-#{theme} " + selector
+    if marker
+      selector = selector + " .marker"
+    if active
+      selector = selector + ".active"
+    pureSelector = selector
+    if before
+      selector = selector + "," + pureSelector + ":before"
+    if after
+      selector = selector + "," + pureSelector + ":after"
+    return "#{oldcss}#{selector}{#{css}}"
+  css = ""
+
+  switch atom.config.get("color-tabs.backgroundStyle")
+    when "gradient"
+      css  = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);"
+        before: true
+        after: true
+      css = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);"
+        theme: "isotope-ui"
+        before: true
+        after: true
+      css = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, rgba(0,0,0,0) 100%);"
+        theme: "atom-light-ui"
+        before: true
+        after: true
+        active: true
+      css = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, #d9d9d9 100%);"
+        theme: "atom-light-ui"
+        before: true
+        after: true
+      css = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, #222222 100%);"
+        theme: "atom-dark-ui"
+        before: true
+        after: true
+        active: true
+      css = cssBuilder css,
+        css: "background-image:
+        -webkit-linear-gradient(top, #{color} 0%, #333333 100%);"
+        theme: "atom-dark-ui"
+        before: true
+        after: true
+    when "solid"
+      if parseInt(color.replace('#', ''), 16) > 0xffffff/2
+        text_color = "black"
+      else
+        text_color = "white"
+      css = cssBuilder css,
+        css: "background-color: #{color}; color: #{text_color};
+        background-image: none;"
+        before: true
+        after: true
+      css = cssBuilder css,
+        css: "background-color: #{color};"
+        theme: "isotope-ui"
+        before: true
+        after: true
+
+  border = atom.config.get("color-tabs.borderStyle")
+  borderSize = atom.config.get("color-tabs.borderSize")
+  unless border == "none"
+    css = cssBuilder css,
+      css: "box-sizing: border-box;
+        border-#{border}: solid #{borderSize}px #{color};"
+      before: border == "top" or border == "bottom"
+      after: border == "top" or border == "bottom"
+
+  marker = atom.config.get "color-tabs.markerStyle"
+  unless marker == "none"
+    css = cssBuilder css,
+      css: "display: inline-block;
+        width: 0;
+        height: 0;
         right: 0;
         top: 0;
-      }"
-    else if markerType == 'round'
-      css += "
-          border-color: #{color};
-          border-width: 6px;
-          right: 20px;
-          top: 50%;
-          border-radius: 10px;
-      }"
-    else if markerType == 'square'
-      css += "
-          border-color: #{color};
-          border-width: 6px;
-          right: 20px;
-          top: 50%;
-          border-radius: 3px;
-      }"
-    else if markerType == 'border'
-      side = 'bottom'
-      size = 5
-      css = "ul.tab-bar>li.tab[data-path='#{path}'][is='tabs-tab'] {
-          box-sizing: border-box;
-          border-#{side}: solid #{size}px #{color};
-      }"
-    tab = (document.querySelector ".title[data-path='#{path}']").parentElement
-    marker = document.querySelector "ul.tab-bar>li.tab[data-path='#{path}'] .marker"
-    if !marker
-      marker = document.createElement 'div'
-      marker.className = 'marker'
-      tab.appendChild marker
+        border-style: solid;
+        position: absolute;"
+
+      marker: true
+    switch marker
+      when "corner"
+        css = cssBuilder css,
+          css: "border-color: transparent #{color} transparent transparent;
+            border-width: 0 20px 20px 0;"
+          marker: true
+      when "round"
+        css = cssBuilder css,
+          css: "border-color: #{color};
+            border-width: 6px;
+            border-radius: 10px;"
+          marker: true
+      when "square"
+        css = cssBuilder css,
+          css: "border-color: #{color};
+            border-width: 6px;
+            border-radius: 3px;"
+          marker: true
   cssElement.appendChild document.createTextNode css
 
   return cssElement
@@ -111,6 +152,11 @@ processPath= (path,color,revert=false,save=false) ->
       div.title[data-path='#{path.replace(/\\/g,"\\\\")}']"
     for tabDiv in tabDivs
       tabDiv.parentElement.setAttribute "data-path", path
+      marker = tabDiv.querySelector ".marker"
+      unless marker?
+        marker = document.createElement 'div'
+        marker.className = 'marker'
+        tabDiv.appendChild marker
     unless cssElement.parentElement?
       head = document.getElementsByTagName('head')[0]
       head.appendChild cssElement
@@ -174,7 +220,10 @@ class ColorTabs
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?
             @color te.getPath(), false
-      @disposables.add atom.config.observe("color-tabs.backgroundGradient",@repaint)
+      @disposables.add atom.config.observe("color-tabs.backgroundStyle",@repaint)
+      @disposables.add atom.config.observe("color-tabs.borderStyle",@repaint)
+      @disposables.add atom.config.observe("color-tabs.borderSize",@repaint)
+      @disposables.add atom.config.observe("color-tabs.markerStyle",@repaint)
     log "loaded"
   color: (path, color) ->
     processPath path, color, !color, true

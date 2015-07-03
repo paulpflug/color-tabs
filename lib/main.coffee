@@ -9,9 +9,25 @@ module.exports = new class Main
   colorTabs: null
   colorChangeCb: []
   config:
-    backgroundGradient:
-      type: "boolean"
-      default: true
+    backgroundStyle:
+      title: "Background style"
+      type: "string"
+      default: "gradient"
+      enum: ["gradient","solid","none"]
+    borderStyle:
+      title: "Border style"
+      type: "string"
+      default: "none"
+      enum: ["top","bottom","left","right","none"]
+    borderSize:
+      title: "Border thickness"
+      type: "integer"
+      default: "6"
+    markerStyle:
+      title: "Marker style"
+      type: "string"
+      default: "none"
+      enum: ["corner","round","square","none"]
     debug:
       type: "integer"
       default: 0

@@ -2,7 +2,19 @@
 
 Adds colors to tabs..
 
+![seti](https://cloud.githubusercontent.com/assets/1881921/8502970/cf0522b2-21b7-11e5-919d-6d66f236de7a.png)
+
 ![color-tabs](https://cloud.githubusercontent.com/assets/1881921/8267564/90525440-1767-11e5-96de-565e02a1cc67.png)
+
+![atom](https://cloud.githubusercontent.com/assets/1881921/8502967/ced57ddc-21b7-11e5-9782-7fbc733d40b1.png)
+
+![darkone](https://cloud.githubusercontent.com/assets/1881921/8502968/cef22932-21b7-11e5-8619-349fa1182b0a.png)
+
+![isotope](https://cloud.githubusercontent.com/assets/1881921/8502969/cefee492-21b7-11e5-9d5b-447df17ab4be.png)
+
+
+
+Not all styles are working with all themes!
 
 
 ## Usage
