@@ -9,6 +9,11 @@ Adds colors to tabs..
 
 `ctrl+alt+a` to add a random color to active tab
 
+### Other cool packages
+
+- Automatically colors your tabs based on regex: [color-tabs-regex](https://atom.io/packages/color-tabs-regex)
+
+
 ### Services
 
 This package also provides two services
