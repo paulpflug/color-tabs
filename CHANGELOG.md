@@ -1,3 +1,7 @@
+## 0.1.5
+
+* exposed save functionality to color service #6 thx @averrin
+
 ## 0.1.4
 
 * added ability to customize the color style big thx @averrin
