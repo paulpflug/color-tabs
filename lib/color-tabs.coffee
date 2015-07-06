@@ -225,8 +225,8 @@ class ColorTabs
       @disposables.add atom.config.observe("color-tabs.borderSize",@repaint)
       @disposables.add atom.config.observe("color-tabs.markerStyle",@repaint)
     log "loaded"
-  color: (path, color) ->
-    processPath path, color, !color, true
+  color: (path, color, save=true) ->
+    processPath path, color, !color, save
   setColorChangeCb: (instance)->
     colorChangeCb = instance
   getColors: ->
