@@ -20,12 +20,16 @@ Not all styles are working with all themes!
 ## Usage
 
 `ctrl+alt+a` to add a random color to active tab
+
 `ctrl+alt+x` to remove the color from active tab
 
 ### Other cool packages
 
 - Automatically colors your tabs based on regex: [color-tabs-regex](https://atom.io/packages/color-tabs-regex)
 
+### Where to set style
+
+![settings](https://cloud.githubusercontent.com/assets/1881921/8529066/df3c337a-2417-11e5-8e73-fecbf0ce2379.png)
 
 ### Services
 

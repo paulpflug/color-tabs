@@ -1,3 +1,7 @@
+## 0.1.6
+
+* two bugfixes #8 #10 thx @averrin
+
 ## 0.1.5
 
 * exposed save functionality to color service #6 thx @averrin
