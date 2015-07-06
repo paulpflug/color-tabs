@@ -65,8 +65,8 @@ module.exports = new class Main
             @onceActivated.dispose()
 
   provideChangeColor: ->
-    return (path,color) =>
-      @color? path, color
+    return (path,color, save=true) =>
+      @color? path, color, save
 
   provideColorChangeCb: ->
     return (cb, add=true) =>
