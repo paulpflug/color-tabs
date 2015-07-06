@@ -20,6 +20,7 @@ Not all styles are working with all themes!
 ## Usage
 
 `ctrl+alt+a` to add a random color to active tab
+`ctrl+alt+x` to remove the color from active tab
 
 ### Other cool packages
 
@@ -58,7 +59,9 @@ your package:
     @colorChangeCb = colorChangeCb
 
   #Wherever you want to use it
-    @changeColor path, newColor # changes the color of a tab for a specific filepath
+    @changeColor path, newColor # changes the color of a tab for a specific file path
+    @changeColor path, false # removes the color
+    @changeColor path, newColor, false # prevents saving, colors will not be persistent
 
     @cbHandler = @colorChangeCb (path, newColor) ->
       #is called after the color of a tab got changed
