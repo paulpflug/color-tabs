@@ -2,15 +2,15 @@
 
 Adds colors to tabs..
 
-![seti](https://cloud.githubusercontent.com/assets/1881921/8502970/cf0522b2-21b7-11e5-919d-6d66f236de7a.png)
+![seti](https://cloud.githubusercontent.com/assets/1881921/8502970/cf0522b2-21b7-11e5-919d-6d66f236de7a.png) -- backgroundStyle: solid, markerStyle: none, borderStyle: none
 
-![color-tabs](https://cloud.githubusercontent.com/assets/1881921/8267564/90525440-1767-11e5-96de-565e02a1cc67.png)
+![color-tabs](https://cloud.githubusercontent.com/assets/1881921/8267564/90525440-1767-11e5-96de-565e02a1cc67.png) -- backgroundStyle: gradient, markerStyle: none, borderStyle: none
 
-![atom](https://cloud.githubusercontent.com/assets/1881921/8502967/ced57ddc-21b7-11e5-9782-7fbc733d40b1.png)
+![atom](https://cloud.githubusercontent.com/assets/1881921/8502967/ced57ddc-21b7-11e5-9782-7fbc733d40b1.png) -- backgroundStyle: none, markerStyle: none, borderStyle: bottom
 
-![darkone](https://cloud.githubusercontent.com/assets/1881921/8502968/cef22932-21b7-11e5-8619-349fa1182b0a.png)
+![darkone](https://cloud.githubusercontent.com/assets/1881921/8502968/cef22932-21b7-11e5-8619-349fa1182b0a.png) -- backgroundStyle: none, markerStyle: corner, borderStyle: none
 
-![isotope](https://cloud.githubusercontent.com/assets/1881921/8502969/cefee492-21b7-11e5-9d5b-447df17ab4be.png)
+![isotope](https://cloud.githubusercontent.com/assets/1881921/8502969/cefee492-21b7-11e5-9d5b-447df17ab4be.png) -- backgroundStyle: none, markerStyle: corner, borderStyle: bottom
 
 
 
