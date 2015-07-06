@@ -1,7 +1,7 @@
 sep = require("path").sep
 log = null
 CSON = require 'season'
-colorFile = atom.getConfigDirPath()+"color-tabs.cson"
+colorFile = atom.getConfigDirPath()+"/color-tabs.cson"
 colors = {}
 colorChangeCb = null
 cssElements = {}
