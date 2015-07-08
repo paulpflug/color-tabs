@@ -138,9 +138,10 @@ getRandomColor= ->
     color += letters[Math.floor(Math.random() * 16)]
   return color
 
-processPath= (path,color,revert=false,save=false) ->
+processPath= (path,color,revert=false,save=false,warn=false) ->
   unless path?
-    atom.notifications.addWarning "coloring a unsaved tab is not supported"
+    if warn
+      atom.notifications.addWarning "coloring a unsaved tab is not supported"
     return
   cssElement = getCssElement path, color
   unless revert
@@ -213,7 +214,7 @@ class ColorTabs
         'color-tabs:color-current-tab': =>
           te = atom.workspace.getActiveTextEditor()
           if te?.getPath?
-            @color te.getPath(), getRandomColor()
+            @color te.getPath(), getRandomColor(), true, true
           else
             atom.notifications.addWarning "coloring is only possible for file tabs"
         'color-tabs:uncolor-current-tab': =>
@@ -225,8 +226,8 @@ class ColorTabs
       @disposables.add atom.config.observe("color-tabs.borderSize",@repaint)
       @disposables.add atom.config.observe("color-tabs.markerStyle",@repaint)
     log "loaded"
-  color: (path, color, save=true) ->
-    processPath path, color, !color, save
+  color: (path, color, save=true, warn=false) ->
+    processPath path, color, !color, save, warn
   setColorChangeCb: (instance)->
     colorChangeCb = instance
   getColors: ->

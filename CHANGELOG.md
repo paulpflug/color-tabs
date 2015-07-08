@@ -1,3 +1,7 @@
+## 0.1.7
+
+* disable warnings on use of service #11
+
 ## 0.1.6
 
 * two bugfixes #8 #10 thx @averrin

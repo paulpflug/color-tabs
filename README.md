@@ -66,6 +66,7 @@ your package:
     @changeColor path, newColor # changes the color of a tab for a specific file path
     @changeColor path, false # removes the color
     @changeColor path, newColor, false # prevents saving, colors will not be persistent
+    @changeColor path, newColor, false, true # will show a warning if path is undefined
 
     @cbHandler = @colorChangeCb (path, newColor) ->
       #is called after the color of a tab got changed
