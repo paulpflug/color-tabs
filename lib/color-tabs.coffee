@@ -94,7 +94,9 @@ getCssElement = (path, color) ->
   unless border == "none"
     css = cssBuilder css,
       css: "box-sizing: border-box;
-        border-#{border}: solid #{borderSize}px #{color};"
+        border-#{border}: solid #{borderSize}px #{color};
+        border-image: none;
+      "
       before: border == "top" or border == "bottom"
       after: border == "top" or border == "bottom"
 
