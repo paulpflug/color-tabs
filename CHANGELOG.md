@@ -1,3 +1,7 @@
+## 0.1.8
+
+* support for colored borders in `one` theme #12 #13 thx @averrin
+
 ## 0.1.7
 
 * disable warnings on use of service #11
